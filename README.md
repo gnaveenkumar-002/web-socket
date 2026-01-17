@@ -46,10 +46,23 @@ websocket-chat/
 ├── sonar-project.properties
 └── README.md
 
+=======
+##  WebSocket Message Format
 
----
+{
+  "action": "sendMessage",
+  "groupId": "team-1",
+  "user": "nav",
+  "message": "Hello everyone"
+}
 
-##Testing
+
+
+## Commands
+  sam build
+  sam deploy --guided
+
+ Testing
 
 Run unit tests with coverage:
 
@@ -88,16 +101,6 @@ Stale WebSocket connections (HTTP 410) are removed automatically
 
 Logic is written to be fully testable and mock-friendly
 
-##  WebSocket Message Format
-
-```json
-{
-  "action": "sendMessage",
-  "groupId": "team-1",
-  "user": "nav",
-  "message": "Hello everyone"
-}
-```end
 ##Author
 
 GUDDEPPA GARI NAVEEN KUMAR
