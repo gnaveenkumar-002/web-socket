@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>WebSocket Team Chat</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    #chat {
+      border: 1px solid #ccc;
+      height: 300px;
+      padding: 10px;
+      overflow-y: auto;
+      margin-top: 10px;
+      background: #fafafa;
+    }
+
+    input {
+      margin: 5px 0;
+      padding: 5px;
+    }
+
+    button {
+      padding: 6px 12px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>WebSocket Team Chat</h2>
+
+  <label>User:</label><br />
+  <input id="user" placeholder="Enter username" /><br />
+
+  <label>Team:</label><br />
+  <input id="team" placeholder="Enter team id" /><br />
+
+  <button onclick="connect()">Connect</button>
+
+  <hr />
+
+  <div id="chat"></div>
+
+  <br />
+
+  <input id="msg" placeholder="Type message..." />
+  <button onclick="sendMessage()">Send</button>
+
+  <script>
+    let ws;
+
+    function connect() {
+      const user = document.getElementById("user").value.trim();
+      const team = document.getElementById("team").value.trim();
+
+      if (!user || !team) {
+        alert("User and Team are required");
+        return;
+      }
+
+      const url =
+        `wss://hel14oyuu0.execute-api.us-east-1.amazonaws.com/Prod` +
+        `?groupId=${encodeURIComponent(team)}&user=${encodeURIComponent(user)}`;
+
+      if (ws && ws.readyState === WebSocket.OPEN) {
+        ws.close();
+        }
+    ws = new WebSocket(url);
+
+
+      ws.onopen = () => {
+        addMessage("System", "Connected");
+      };
+
+      ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+       const time = new Date(data.timestamp).toLocaleTimeString();
+       addMessage(`${data.user} [${time}]`, data.message);
+      };
+
+      ws.onerror = (err) => {
+        console.error("WebSocket error", err);
+        addMessage("System", "WebSocket error");
+      };
+
+      ws.onclose = () => {
+        addMessage("System", "Disconnected");
+      };
+    }
+
+    function sendMessage() {
+      if (!ws || ws.readyState !== WebSocket.OPEN) {
+        alert("WebSocket not connected");
+        return;
+      }
+
+      const message = document.getElementById("msg").value.trim();
+      const user = document.getElementById("user").value.trim();
+      const team = document.getElementById("team").value.trim();
+
+      if (!message) return;
+
+      ws.send(
+        JSON.stringify({
+          action: "sendMessage",
+          groupId: team,
+          user: user,
+          message: message
+        })
+      );
+
+      //  DO NOT render message here (avoids duplicates)
+      document.getElementById("msg").value = "";
+    }
+
+    function addMessage(user, message) {
+      const chat = document.getElementById("chat");
+      chat.innerHTML += `<b>${user}:</b> ${message}<br />`;
+      chat.scrollTop = chat.scrollHeight;
+    }
+  </script>
+
+</body>
+</html>
