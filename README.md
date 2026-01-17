@@ -49,16 +49,6 @@ websocket-chat/
 
 ---
 
-##  WebSocket Message Format
-
-```json
-{
-  "action": "sendMessage",
-  "groupId": "team-1",
-  "user": "nav",
-  "message": "Hello everyone"
-}
-
 ##Testing
 
 Run unit tests with coverage:
@@ -98,6 +88,16 @@ Stale WebSocket connections (HTTP 410) are removed automatically
 
 Logic is written to be fully testable and mock-friendly
 
+##  WebSocket Message Format
+
+```json
+{
+  "action": "sendMessage",
+  "groupId": "team-1",
+  "user": "nav",
+  "message": "Hello everyone"
+}
+```end
 ##Author
 
 GUDDEPPA GARI NAVEEN KUMAR
