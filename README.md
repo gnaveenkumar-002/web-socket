@@ -59,11 +59,7 @@ websocket-chat/
   "message": "Hello everyone"
 }
 
-Commands
-  sam build
-  sam deploy --guided
-
- Testing
+##Testing
 
 Run unit tests with coverage:
 
@@ -102,7 +98,7 @@ Stale WebSocket connections (HTTP 410) are removed automatically
 
 Logic is written to be fully testable and mock-friendly
 
- Author
+##Author
 
 GUDDEPPA GARI NAVEEN KUMAR
 B.Tech – Computer Science & Engineering
